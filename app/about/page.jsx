@@ -1,3 +1,4 @@
+import Posts from '@/components/Posts'
 import Wrapper from '@/components/Wrapper'
 import React from 'react'
 
@@ -8,6 +9,7 @@ const AboutPage = () => {
         <div className="text-center">
           <h2 className="text-2xl sm:text-4xl font-bold  ">About Us Page</h2>
           <p className="text-2xl sm:text-4xl">Coming Soon</p>
+          <Posts />
         </div>
       </Wrapper>
     </div>
