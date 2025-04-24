@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 // function component
 const Posts = () => {
@@ -9,7 +9,12 @@ const Posts = () => {
   const [value, setValue] = useState(0)
   const [posts, setPosts] = useState([])
   const [error, setError] = useState(false)
+  const [filteredPosts, setFilteredPosts] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
+
+  const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  const sortedNumbers = numbers.sort((a, b) => b - a)
+
   const url = 'https://jsonplaceholder.typicode.com/users/1/posts'
   // function expression
   const stateHandler = () => {
@@ -23,7 +28,6 @@ const Posts = () => {
       setError(true)
       setErrorMessage('Failed to fetch data')
     }
-
     // if fetch successful
     const posts = await response.json()
     console.log(posts)
@@ -38,31 +42,42 @@ const Posts = () => {
    * state will change
    * it use to manipulate data
    */
+  // it runs on each re-render of page
+  useEffect(() => {
+    fetchposts()
+    return console.log('use effect completed')
+  }, [value])
 
-  useEffect(
-    // setup => it will be a function with logic
-    () => {
-      console.log(`value of state changes: ${value}`)
-      // invoke the function to fetch data when page loads.
-      fetchposts()
-    },
-    // dependency => it contains the state, on which our useEffect depend
-    [value],
-  )
+  // it mostly uses for data filtering
+  useMemo(() => {
+    const filteredPosts = posts
+      .filter((_, index) => index % 2 === 0)
+      .sort((a, b) => b.id - a.id)
+    setFilteredPosts(filteredPosts)
+  }, [posts])
 
   return (
     <div>
       <button onClick={stateHandler}>Change State Value</button>
       <p>{value}</p>
-      <p className="text-green-500 font-bold text-2xl mb-10">
+
+      <p className="text-orange-500 text-2xl">
+        {' '}
         Total Number of Posts: {posts.length}
       </p>
+      <p className="text-green-500 font-bold text-2xl mb-10">
+        Number of Filtered Posts: {filteredPosts.length}
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {posts.map((post, index) => {
+        {filteredPosts.map((post, index) => {
           return (
             <div
+              key={index}
               className={`border-2 text-start p-5 space-y-2 mb-5 border-gray-600 rounded-md`}
             >
+              <span className="flex justify-center items-center bg-black text-white rounded-full w-6 h-6 ">
+                {post.id}
+              </span>
               <h1 className="text-lg font-bold text-orange-600">
                 {post.title}
               </h1>
@@ -71,6 +86,9 @@ const Posts = () => {
           )
         })}
       </div>
+      <p className="my-10 text-3xl text-purple-700">
+        {JSON.stringify(sortedNumbers)}
+      </p>
     </div>
   )
 }
