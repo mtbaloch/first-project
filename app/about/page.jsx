@@ -1,13 +1,21 @@
+'use client'
 import Posts from '@/components/Posts'
 import Wrapper from '@/components/Wrapper'
 import React from 'react'
-
+import { useAuth } from '@/components/userContext'
 const AboutPage = () => {
+  // custom hook
+  const { user, setUser } = useAuth()
+  const setNewUser = () => {
+    setUser({ name: 'Habib Khan' })
+  }
   return (
     <div className="min-h-screen flex flex-col justify-center">
       <Wrapper>
         <div className="text-center">
           <h2 className="text-2xl sm:text-4xl font-bold  ">About Us Page</h2>
+          <h2>{user.name}</h2>
+          <button onClick={setNewUser}>Change New User</button>
           <p className="text-2xl sm:text-4xl">Coming Soon</p>
           <Posts />
         </div>

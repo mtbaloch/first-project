@@ -1,17 +1,20 @@
 'use client'
 import Image from 'next/image'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useRef } from 'react'
 
 // function component
 const Posts = () => {
   // hook that manage local states inside single component or single page
   // it only have one type of value
+  // useState hook only manage states locally, mean inside a page or component
   const [value, setValue] = useState(0)
   const [posts, setPosts] = useState([])
   const [error, setError] = useState(false)
   const [filteredPosts, setFilteredPosts] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
-
+  const intervalRef = useRef('')
+  const inputRef = useRef('')
+  const paraRef = useRef('')
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   const sortedNumbers = numbers.sort((a, b) => b - a)
 
@@ -19,6 +22,10 @@ const Posts = () => {
   // function expression
   const stateHandler = () => {
     setValue((prev) => prev + 1)
+  }
+  const refHandler = () => {
+    console.log('What Ref contains : ', inputRef.current.value)
+    console.log('What Ref contains : ', paraRef.current.innerHTML)
   }
   // function to fetch data from remote url
   const fetchposts = async () => {
@@ -43,10 +50,11 @@ const Posts = () => {
    * it use to manipulate data
    */
   // it runs on each re-render of page
+  // it is used to fetch data and show side effects
   useEffect(() => {
     fetchposts()
     return console.log('use effect completed')
-  }, [value])
+  }, [])
 
   // it mostly uses for data filtering
   useMemo(() => {
@@ -86,8 +94,10 @@ const Posts = () => {
           )
         })}
       </div>
-      <p className="my-10 text-3xl text-purple-700">
-        {JSON.stringify(sortedNumbers)}
+      <input ref={inputRef} className="border px-4 py-1.5 border-red-600" />
+      <button onClick={refHandler}>Get Input Value</button>
+      <p ref={paraRef}>
+        mohammab tahir khan<span>Full Stack Developer</span>
       </p>
     </div>
   )
