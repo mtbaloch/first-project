@@ -1,3 +1,4 @@
+// directive => that makes our page or component - client side page / component
 'use client'
 import Posts from '@/components/Posts'
 import Wrapper from '@/components/Wrapper'
