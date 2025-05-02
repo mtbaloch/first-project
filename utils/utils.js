@@ -10,11 +10,11 @@
 
 // this function will be always async function
 // in both server components and client components
-export async function fetchBlog() {
+export async function fetchBlog(url) {
   console.log('process to fetch data')
   try {
     // keep code that can generate error in try block
-    const response = await fetch('https://dummyjson.com/posts')
+    const response = await fetch(url)
 
     if (!response.ok) {
       throw new Error('Failed to fetch blog posts')
