@@ -22,7 +22,7 @@ export async function fetchBlog(url) {
     // every request has body containing data that we want to get from server
     // .json() is a method that give us our requested data
     const data = await response.json()
-
+    console.log(data)
     return data
   } catch (error) {
     console.log(error)
